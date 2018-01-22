@@ -95,11 +95,11 @@ void Update(RenderWindow &window)
 	}
 	else if (bx <= 10 + paddleSize.x && by > paddles[0].getPosition().y - (paddleSize.y * 0.5f) && by < paddles[0].getPosition().y + (paddleSize.y * 0.5f))
 	{
-		ballVelocity.x *= -1.0f;
+		ballVelocity.x *= -1.1f;
 	}
 	else if (bx > gameWidth - 10 - paddleSize.x && by > paddles[1].getPosition().y - (paddleSize.y * 0.5f) && by < paddles[1].getPosition().y + (paddleSize.y * 0.5f))
 	{
-		ballVelocity.x *= -1.0f;
+		ballVelocity.x *= -1.1f;
 	}
 
 	if (paddles[1].getPosition().y > ball.getPosition().y && paddles[1].getPosition().y > paddleSize.y / 2)
