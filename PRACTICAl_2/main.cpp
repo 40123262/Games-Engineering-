@@ -1,6 +1,8 @@
 #include <SFML/Graphics.hpp>
 #include <iostream>
+#include "Invader.h"
 #include "ship.h"
+#include "Player.h"
 #include "Game.h"
 
 using namespace sf;
@@ -11,7 +13,7 @@ const Keyboard::Key controls[4] = {
 	Keyboard::Right,
 	Keyboard::Space
 };
-vector<Ship *> ships;
+vector<Ship*> ships;
 Texture spritesheet;
 Sprite invader;
 void Load()
@@ -20,9 +22,19 @@ void Load()
 	{
 		cerr << "Failed to load spritesheet!" << endl;
 	}
-	invader.setTexture(spritesheet);
-	invader.setTextureRect(IntRect(0, 0, 32, 32));
-
+	for (int row = 0; row < invaders_rows; row++)
+	{
+		auto displacement = (row % 5);
+		auto rect = IntRect(0 + 32*displacement, 0 , 32, 32);
+		for (int col = 0; col < invaders_columns; col++)
+		{
+			Vector2f pos = { 16.0f + 42.0f * col, 16.0f + 42.0f * row };
+			Invader* inv = new Invader(rect, pos);
+			//inv->scale({ 1.2f,1.7f });
+			ships.push_back(inv);
+		}
+	}
+	
 }
 void reset()
 {
@@ -47,11 +59,16 @@ void Update(RenderWindow &window)
 	{
 		window.close();
 	}
+	for (auto &s : ships)
+	{
+		s->Update(dt);
+	}
 }
 
 void Render(RenderWindow &window)
 {
-	window.draw(invader);
+	for(auto &s: ships)
+	window.draw(*s);
 }
 
 int main()
