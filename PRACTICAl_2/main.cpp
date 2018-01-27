@@ -22,6 +22,8 @@ void Load()
 	{
 		cerr << "Failed to load spritesheet!" << endl;
 	}
+	Player* p1 = new Player();
+	ships.push_back(p1);
 	for (int row = 0; row < invaders_rows; row++)
 	{
 		auto displacement = (row % 5);
