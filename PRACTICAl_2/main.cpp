@@ -4,6 +4,7 @@
 #include "ship.h"
 #include "Player.h"
 #include "Game.h"
+#include "Bullet.h"
 
 using namespace sf;
 using namespace std;
@@ -14,6 +15,7 @@ const Keyboard::Key controls[4] = {
 	Keyboard::Space
 };
 vector<Ship*> ships;
+Bullet* b;
 Texture spritesheet;
 Sprite invader;
 void Load()
@@ -65,12 +67,14 @@ void Update(RenderWindow &window)
 	{
 		s->Update(dt);
 	}
+	Bullet::Update(dt);
 }
 
 void Render(RenderWindow &window)
 {
 	for(auto &s: ships)
-	window.draw(*s);
+		window.draw(*s);
+	b->Render(window);
 }
 
 int main()
