@@ -1,32 +1,34 @@
 #include <SFML/Graphics.hpp>
-#include "Game.h"
+#include "Pacman.h"
 #include "Player.h"
 #include "Ghost.h"
+#include "Scene.h"
 #include "levelsystem.h"
+#include "SystemRenderer.h"
+#include "EntityManager.h"
+#include <memory>
 
 using namespace sf;
 using namespace std;
 
-vector<Entity*> entities;
+std::shared_ptr<Scene> gameScene;
+std::shared_ptr<Scene> menuScene;
+std::shared_ptr<Scene> activeScene;
 void Load()
 {
-	ls::loadLevelFile("res/levels/maze.txt");
-	for (size_t y = 0; y < ls::getHeight(); ++y) {
-		for (size_t x = 0; x < ls::getWidth(); ++x) {
-			cout << ls::getTile({ x, y });
-		}
-		cout << endl;
-	}
-	entities.push_back(new Player());
-	entities.push_back(new Ghost());
-	entities.push_back(new Ghost());
-	entities.push_back(new Ghost());
+	gameScene.reset(new GameScene());
+	menuScene.reset(new MenuScene());
+	gameScene->load();
+	menuScene->load();
+
+	activeScene = menuScene;
 }
 
 void Update(RenderWindow &window)
 {
 	static Clock clock;
 	float dt = clock.restart().asSeconds();
+	activeScene->update(dt);
 
 	Event event;
 	while (window.pollEvent(event))
@@ -35,28 +37,25 @@ void Update(RenderWindow &window)
 			window.close();
 			return;
 		}
+	}	
+	if (Keyboard::isKeyPressed(Keyboard::Escape)) {
+		window.close();
 	}
 	
-	for(auto s : entities)
-	{
-		s->update(dt);
-	}
 }
 
 void Render(RenderWindow &window)
 {
-	ls::Render(window);
-	for (auto s : entities)
-	{
-		s->render(window);
-	}
+	activeScene->render();
+	//flush to screen
+	Renderer::render();
 }
 
 int main()
 {
-	RenderWindow window(VideoMode(gameWidth, gameHeight), "Maze game");
+	RenderWindow window(VideoMode(gameWidth, gameHeight), "Pacman");
+	Renderer::initialise(window);
 	Load();
-
 	while (window.isOpen())
 	{
 		window.clear();

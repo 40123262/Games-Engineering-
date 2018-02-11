@@ -1,6 +1,7 @@
 #pragma once
 #include <SFML/Graphics.hpp>
 #include <memory>
+#include "SystemRenderer.h"
 
 class Entity
 {
@@ -14,7 +15,7 @@ public:
 	virtual ~Entity() = default;
 
 	virtual void update(const double dt);
-	virtual void render(sf::RenderWindow &window) const = 0;
+	virtual void render() const = 0;
 
 	const sf::Vector2f getPosition();
 	void setPosition(const sf::Vector2f &pos);

@@ -10,5 +10,5 @@ public:
 	bool validMove(sf::Vector2f pos);
 	void update(double dt) override;
 	Player();
-	void render(sf::RenderWindow &window) const override;
+	void render() const override;
 };

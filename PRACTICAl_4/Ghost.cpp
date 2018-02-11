@@ -23,15 +23,15 @@ void Ghost::update(double dt)
 		if (validMove(_position + Vector2f(0, -_speed * dt - 25.0f)))
 			move(Vector2f(0, -_speed * dt));
 	}
-	if (direction == 1) {
+	else if (direction == 1) {
 		if (validMove(_position + Vector2f(0, _speed * dt + 25.0f)))
 			move(Vector2f(0, _speed * dt));
 	}
-	if (direction == 2) {
+	else if (direction == 2) {
 		if (validMove(_position + Vector2f(-_speed * dt - 25.0f, 0)))
 			move(Vector2f(-_speed * dt, 0));
 	}
-	if (direction == 3) {
+	else if (direction == 3) {
 		if (validMove(_position + Vector2f(-_speed * dt + 25.0f, 0)))
 			move(Vector2f(_speed * dt, 0));
 	}
@@ -42,8 +42,8 @@ bool Ghost::validMove(sf::Vector2f pos)
 {
 	return (ls::getTileAt(pos) != ls::WALL);
 }
-void Ghost::render(sf::RenderWindow &window) const
+void Ghost::render() const
 {
-	window.draw(*_shape);
+	Renderer::queue(_shape.get());
 }
 

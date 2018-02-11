@@ -1,4 +1,5 @@
 #include "Player.h"
+#include "SystemRenderer.h"
 using namespace sf;
 using namespace std;
 Player::Player() 
@@ -34,8 +35,8 @@ bool Player::validMove(sf::Vector2f pos)
 {
 	return (ls::getTileAt(pos) != ls::WALL);
 }
-void Player::render(sf::RenderWindow &window) const
+void Player::render() const
 {
-	window.draw(*_shape);
+	Renderer::queue(_shape.get());
 }
 
