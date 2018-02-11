@@ -55,3 +55,9 @@ target_include_directories(PRACTICAL_4 SYSTEM PRIVATE ${SFML_INCS})
 target_link_libraries(PRACTICAL_4 lib_tile_level_loader lib_maths sfml-graphics)
 set_target_properties(PRACTICAL_4 PROPERTIES VS_DEBUGGER_WORKING_DIRECTORY ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/$(Configuration))
 add_dependencies(PRACTICAL_4 copy_resources)
+
+file(GLOB_RECURSE SOURCE_FILES lib_ecm/*.cpp lib_ecm/*.h)
+add_library(lib_ecm STATIC ${SOURCE_FILES})
+target_include_directories(lib_ecm INTERFACE "${CMAKE_SOURCE_DIR}/lib_ecm/")
+target_link_libraries(lib_ecm PRIVATE lib_maths)
+

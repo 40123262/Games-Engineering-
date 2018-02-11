@@ -42,19 +42,13 @@ void MenuScene::render() {
 void GameScene::load()
 {
 	ls::loadLevelFile("res/levels/pacman.txt");
-	for (size_t y = 0; y < ls::getHeight(); ++y) {
-		for (size_t x = 0; x < ls::getWidth(); ++x) {
-			cout << ls::getTile({ x, y });
-		}
-		cout << endl;
-	}
+	
 	_ents.list.push_back(make_shared<Player>());
 	_ents.list.push_back(make_shared<Ghost>());
 	_ents.list.push_back(make_shared<Ghost>());
 	_ents.list.push_back(make_shared<Ghost>());
 	_ents.list.push_back(make_shared<Ghost>());
 
-	//text.setPosition(Vector2f((700 * 0.5f) - (text.getLocalBounds().width * 0.5f), 0));
 }
 void GameScene::update(double dt)
 {
