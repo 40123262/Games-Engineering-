@@ -1,11 +1,9 @@
 #include <SFML/Graphics.hpp>
 #include "Pacman.h"
-#include "Player.h"
-#include "Ghost.h"
 #include "Scene.h"
 #include "levelsystem.h"
 #include "SystemRenderer.h"
-#include "EntityManager.h"
+#include "ecm.h"
 #include <memory>
 
 using namespace sf;
