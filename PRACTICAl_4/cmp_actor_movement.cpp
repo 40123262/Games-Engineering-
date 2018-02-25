@@ -51,7 +51,7 @@ void PlayerMovementComponent::update(double dt) {
 		move(Vector2f(-_speed * dt, 0));
 	}
 	if (Keyboard::isKeyPressed(Keyboard::D)) {
-		move(Vector2f(_speed * dt, 0));
+		move(Vector2f(_speed * dt , 0));
 	}
 
 	ActorMovementComponent::update(dt);

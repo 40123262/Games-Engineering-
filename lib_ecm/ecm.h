@@ -73,7 +73,7 @@ struct EntityManager {
 
 class Component {
 protected:
-	Entity * _parent;
+	Entity* _parent;
 	bool _forDeletion;
 	explicit Component(Entity *p);
 

@@ -87,7 +87,7 @@ int Entity::getPoints()
 }
 
 //Component
-Component::Component(Entity * p)
+Component::Component(Entity *p)
 {
 	_parent = p;
 	_forDeletion = false;

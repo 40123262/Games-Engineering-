@@ -4,6 +4,7 @@
 #include "levelsystem.h"
 #include "cmp_sprite.h"
 #include "cmp_actor_movement.h"
+#include "cmp_pickups.h"
 
 using namespace sf;
 using namespace std;
@@ -39,14 +40,53 @@ void MenuScene::render() {
 	Renderer::queue(&text);
 }
 vector<shared_ptr<Entity>> ghosts;
+vector<shared_ptr<Entity>> eatingEnts;
 shared_ptr<Entity> player;
+vector<shared_ptr<Entity>> nibbles;
 
+shared_ptr<Entity> makeNibble(const Vector2f& nl, Color col, float size)
+{
+	auto cherry = make_shared<Entity>();
+	auto s = cherry->addComponent<ShapeComponent>();
+	s->setShape<sf::CircleShape>(size);
+	s->getShape().setFillColor(col);
+	s->getShape().setOrigin(size, size);
+
+	auto pickup = cherry->addComponent<PickupComponent>();
+	pickup->setEntities(eatingEnts);
+	cherry->setPosition(nl);
+	return cherry;
+}
 void GameScene::respawn()
 {
+	for (auto n : nibbles)
+	{
+		n->setForDelete();
+		n.reset();
+	}
+	nibbles.clear();
+
 	_ents.list[0]->setPosition(ls::findTiles(ls::START)[0]);
+
 	auto ghost_spawns = ls::findTiles(ls::ENEMY);
 	for (int i = 1; i < _ents.list.size(); ++i) {
 		_ents.list[i]->setPosition(ghost_spawns[rand() % ghost_spawns.size()]);
+	}
+
+	auto nibbleLoc = ls::findTiles(ls::EMPTY);
+	for (const auto &nl : nibbleLoc)
+	{
+		auto cherry = makeNibble(nl, Color::White, 2.0f);
+		_ents.list.push_back(cherry);
+		nibbles.push_back(cherry);
+	}
+
+	nibbleLoc = ls::findTiles(ls::WAYPOINT);
+	for (const auto &nl : nibbleLoc)
+	{
+		auto cherry = makeNibble(nl, Color::Red, 3.0f);
+		_ents.list.push_back(cherry);
+		nibbles.push_back(cherry);
 	}
 
 }
@@ -65,6 +105,7 @@ void GameScene::load()
 	s->getShape().setPosition({ 100.0f, 100.0f});
 	_ents.list.push_back(pl);
 	player = pl;
+	eatingEnts.push_back(player);
 
 	const sf::Color ghost_cols[]{{ 208, 62, 25 },
 								 { 219, 133, 28 },
@@ -94,7 +135,7 @@ void GameScene::update(double dt)
 	{
 		activeScene = menuScene;
 	}
-	_ents.update(dt);
+	
 	for (auto &g : ghosts) 
 	{
 		if (length(g->getPosition() - player->getPosition()) < 30.0f) 
@@ -103,6 +144,7 @@ void GameScene::update(double dt)
 			respawn();
 		}
 	}
+	_ents.update(dt);
 	Scene::update(dt);
 }
 void GameScene::render()
